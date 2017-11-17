@@ -15,24 +15,21 @@ use Yii;
  *
  * @property Task $task
  */
-class TaskTime extends \yii\db\ActiveRecord
-{
+class TaskTime extends \yii\db\ActiveRecord {
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'task_time';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['task_id', 'start',], 'required'],
-            [['task_id', 'start', 'lenght', 'manual'], 'integer'],
+            [['task_id', 'start', 'length', 'manual'], 'integer'],
             [['task_id'], 'exist', 'skipOnError' => true, 'targetClass' => Task::className(), 'targetAttribute' => ['task_id' => 'id']],
         ];
     }
@@ -40,13 +37,12 @@ class TaskTime extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => 'ID',
             'task_id' => 'Task ID',
             'start' => 'Start',
-            'lenght' => 'Lenght',
+            'length' => 'length',
             'manual' => 'Manual',
         ];
     }
@@ -54,8 +50,7 @@ class TaskTime extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getTask()
-    {
+    public function getTask() {
         return $this->hasOne(Task::className(), ['id' => 'task_id']);
     }
 
@@ -63,8 +58,15 @@ class TaskTime extends \yii\db\ActiveRecord
      * @inheritdoc
      * @return TaskTimeQuery the active query used by this AR class.
      */
-    public static function find()
-    {
+    public static function find() {
         return new TaskTimeQuery(get_called_class());
+    }
+
+    public function calcLength() {
+        if ($this->length) {
+            return $this->length;
+        } else {
+            return time() - $this->start;
+        }
     }
 }

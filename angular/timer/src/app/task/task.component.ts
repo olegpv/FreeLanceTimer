@@ -24,30 +24,33 @@ export class TaskComponent implements OnInit {
     }
     setInterval(() => {
       if (this.task.started) {
-        this.task.time = (Date.now() - this.startTime) / 1000 + this.startTaskTime
+        this.task.t = (Date.now() - this.startTime) / 1000 + this.startTaskTime
       }
     }, 1000)
   }
 
   start() {
     this.startTime = Date.now();
-    this.startTaskTime = this.task.time;
+    this.startTaskTime = this.task.t;
     this.task.started = true;
   }
 
-  stop() {
-    this.task.started = false;
-  }
-  
+  // stop() {
+  //   this.task.started = false;
+  // }
+
   onclickStart() {
-    this.taskService.startTask(this.task.id).subscribe(function () {
-      this.start(); 
+    this.taskService.startTask(this.task.id).subscribe(() => {
+      this.start();
     });
-    
+
   }
 
   onclickStop() {
-    this.stop();
+    this.taskService.stopTask(this.task.id).subscribe((task: Task) => {
+      this.task = task;
+    });
+
   }
 
 }

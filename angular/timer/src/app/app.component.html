@@ -1,3 +1,18 @@
+<div class="row">
+    <div class="col-md-3 col-sm-4">
+        <div class="list-group">
+            <a class="list-group-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" routerLink="">
+                <i class="glyphicon glyphicon-chevron-right "></i>Model Generator</a>
+            <a class="list-group-item " routerLinkActive="active" routerLink="/admin">
+                <i class="glyphicon glyphicon-chevron-right"></i>CRUD Generator</a>
 
+        </div>
+    </div>
+    <div class="col-md-9 col-sm-8">
+        <div class="default-view">
+            <h1>Model Generator</h1>
+            <router-outlet></router-outlet>
 
-<task-list></task-list>
+        </div>
+    </div>
+</div>

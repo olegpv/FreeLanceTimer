@@ -3,16 +3,19 @@ import { CommonModule } from '@angular/common';
 import { TaskListComponent } from './task-list.component';
 import { TaskService } from '../model/task.service';
 import { GlobalService } from '../model/global.service';
-import {ButtonModule} from 'primeng/primeng';
+
 import { TaskComponent } from './task.component';
+import { TimePipe } from './time.pipe';
+import { DecimalPipe } from '@angular/common';
+
 
 @NgModule({
   imports: [
     CommonModule,
-    ButtonModule
+    
   ],
-  declarations: [TaskListComponent, TaskComponent],
+  declarations: [TaskListComponent, TaskComponent, TimePipe],
   exports: [TaskListComponent],
-  providers: [TaskService, GlobalService]
+  providers: [TaskService, GlobalService, DecimalPipe]
 })
 export class TaskModule { }

@@ -18,5 +18,9 @@ export class TaskService {
   }
   startTask(id: number): Observable<any> {
     return this.http.post<any>(this.globalService.host + 'timer/task/start', {id: id},{});
+  }  
+  
+  stopTask(id: number): Observable<Task> {
+    return this.http.post<any>(this.globalService.host + 'timer/task/stop', {id: id},{});
   }
 }

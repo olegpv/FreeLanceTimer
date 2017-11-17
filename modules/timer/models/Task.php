@@ -12,7 +12,7 @@ use Yii;
  * @property integer $start_time
  * @property integer $user_id
  * @property integer $project_id
- * @property integer $lenght
+ * @property integer $time
  *
  * @property Project $project
  * @property User $user
@@ -32,7 +32,7 @@ class Task extends \yii\db\ActiveRecord {
     public function rules() {
         return [
             [['name', 'user_id'], 'required'],
-            [['start_time', 'user_id', 'project_id', 'lenght'], 'integer'],
+            [['start_time', 'user_id', 'project_id', 'time'], 'integer'],
             [['name'], 'string', 'max' => 45],
             [['project_id'], 'exist', 'skipOnError' => true, 'targetClass' => Project::className(), 'targetAttribute' => ['project_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
@@ -49,7 +49,7 @@ class Task extends \yii\db\ActiveRecord {
             'start_time' => 'Start Time',
             'user_id' => 'User ID',
             'project_id' => 'Project ID',
-            'lenght' => 'Lenght',
+            'time' => 'time',
         ];
     }
 
@@ -83,12 +83,9 @@ class Task extends \yii\db\ActiveRecord {
     }
 
     public function isStarted() {
-        $taskTimes = $this->taskTimes;
-
-        foreach ($taskTimes as $taskTime) {
-            if ($taskTime->lenght === null) {
-                return true;
-            }
+        $taskTime = $this->getStartedTaskTime();
+        if ($taskTime) {
+            return true;
         }
         return false;
     }
@@ -104,15 +101,53 @@ class Task extends \yii\db\ActiveRecord {
         return true;
     }
 
-    public function getTime() {
-        return 10;
-    }
-    public function getStarted() {
+    public function stop() {
+        $taskTime = $this->getStartedTaskTime();
+        if (!$taskTime) {
+            return false;
+        }
+        $taskTime->length = $taskTime->calcLength();
+        $taskTime->update(false);
+        $this->time = $this->calcTime();
+        $this->update(false);
+
         return true;
     }
 
+    public function calcTime() {
+        $len = (new \yii\db\Query())
+            ->from('task_time')
+            ->where(['task_id' => $this->id,])
+            ->andWhere( ['not', ['length' => null]])
+            ->sum('length');
+        $len=$len?(int)$len:0;
+        $taskTime = $this->getStartedTaskTime();
+        if ($taskTime) {
+            $len += $taskTime->calcLength();
+        }
+        return $len;
+    }
+
+    public function getStarted() {
+        return $this->isStarted();
+    }
+
+    public function getT() {
+        if($this->isStarted()){
+            return $this->calcTime();
+        }
+        return $this->time;
+    }
+
     public function fields() {
-        $fields = ['time', 'started'];
+        $fields = ['started', 't'];
         return array_merge(parent::fields(), array_combine($fields, $fields));
+    }
+
+    /**
+     * @return TaskTime|array|null
+     */
+    protected function getStartedTaskTime() {
+        return TaskTime::find()->where(['task_id' => $this->id, 'length' => null])->one();
     }
 }

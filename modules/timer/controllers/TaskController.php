@@ -4,16 +4,17 @@ namespace app\modules\timer\controllers;
 
 use app\modules\timer\models\VerbCustom;
 use yii\data\ActiveDataProvider;
+use yii\filters\ContentNegotiator;
 use yii\filters\Cors;
 use yii\rest\ActiveController;
 use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 use app\modules\timer\models\Task;
+use yii\web\Response;
 
 
 class TaskController extends ActiveController {
     public $modelClass = 'app\modules\timer\models\Task';
-
 
     public function behaviors() {
         $behaviors = parent::behaviors();
@@ -27,6 +28,7 @@ class TaskController extends ActiveController {
                 'update' => ['put'],
                 'delete' => ['delete'],
                 'start' => ['post'],
+                'stop' => ['post'],
             ],
         ];
 
@@ -40,7 +42,12 @@ class TaskController extends ActiveController {
             ],
         ]], $behaviors);
 
-
+        $behaviors['contentNegotiator'] = [
+            'class' => ContentNegotiator::className(),
+            'formats' => [
+                'application/json' => Response::FORMAT_JSON,
+            ],
+        ];
 
         return $behaviors;
     }
@@ -114,6 +121,26 @@ class TaskController extends ActiveController {
         }
 
         return 'ok';
+    }
+
+    /**
+     * @return string
+     * @throws HttpException
+     * @throws NotFoundHttpException
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function actionStop() {
+        $bodyParams = \Yii::$app->getRequest()->getBodyParams();
+        $model = $this->loadModel($bodyParams['id']);
+        if ($model->stop()) {
+            $response = \Yii::$app->getResponse();
+            $response->setStatusCode(200);
+        } else {
+            // Validation error
+            throw new HttpException(422, json_encode($model->errors));
+        }
+
+        return $model;
     }
 
     public function actionDelete($id) {

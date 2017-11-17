@@ -1,13 +1,14 @@
-export class Task{
-    id:number;
-    projectId:number;
-    name:string;
+export class Task {
+    id: number;
+    projectId: number;
+    name: string;
 
-    startTime:number;
+    startTime: number;
 
-    time:number;
-    started:boolean;
-    
+    time: number;
+    t: number;
+    started: boolean;
+
     constructor(values: Object = {}) {
         Object.assign(this, values);
     }
