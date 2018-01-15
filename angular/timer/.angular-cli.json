@@ -6,8 +6,7 @@
   "apps": [
     {
       "root": "src",
-      "deployUrl": "js/angular/timer/",
-      "outDir": "../../web/js/angular/timer",
+
       "assets": [
         "assets",
         "favicon.ico"

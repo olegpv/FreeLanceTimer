@@ -4,12 +4,15 @@ import { HttpClientModule } from '@angular/common/http';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Routes, RouterModule, ExtraOptions } from '@angular/router';
 
+
 import { AppComponent } from './app.component';
 import { TaskModule } from './task/task.module';
 import { TaskListComponent } from './task/task-list.component';
 
 import { TaskAdminComponent } from './task-admin/task-admin.component';
 import { TaskAdminModule } from './task-admin/task-admin.module';
+
+import { CommonMyModule } from './common-my/common-my.module';
 
 // определение маршрутов
 const appRoutes: Routes = [
@@ -26,8 +29,10 @@ const appRoutes: Routes = [
   imports: [
     BrowserModule,
     RouterModule.forRoot(appRoutes, { useHash: true }),
+
     HttpClientModule,
-    TaskModule,
+    TaskModule,    
+    CommonMyModule,
     TaskAdminModule,
   ],
   exports: [],

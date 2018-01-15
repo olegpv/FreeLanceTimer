@@ -7,7 +7,7 @@ import { TaskService } from '../model/task.service';
   selector: 'task',
   templateUrl: './task.component.html',
   styleUrls: ['./task.component.css'],
-  encapsulation: ViewEncapsulation.None
+  //encapsulation: ViewEncapsulation.None
 })
 export class TaskComponent implements OnInit {
 

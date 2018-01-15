@@ -5,17 +5,18 @@ import { TaskService } from '../model/task.service';
 import { GlobalService } from '../model/global.service';
 
 import { TaskComponent } from './task.component';
-import { TimePipe } from './time.pipe';
+import { TimePipe } from './../common-my/time.pipe';
 import { DecimalPipe } from '@angular/common';
+import { CommonMyModule } from '../common-my/common-my.module';
 
 
 @NgModule({
   imports: [
     CommonModule,
-    
+    CommonMyModule
   ],
-  declarations: [TaskListComponent, TaskComponent, TimePipe],
+  declarations: [TaskListComponent, TaskComponent],
   exports: [TaskListComponent],
-  providers: [TaskService, GlobalService, DecimalPipe]
+  providers: [TaskService, GlobalService]
 })
 export class TaskModule { }

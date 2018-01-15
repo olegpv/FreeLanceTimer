@@ -1,16 +1,18 @@
 <div class="row">
     <div class="col-md-3 col-sm-4">
-        <div class="list-group">
-            <a class="list-group-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" routerLink="">
-                <i class="glyphicon glyphicon-chevron-right "></i>Model Generator</a>
-            <a class="list-group-item " routerLinkActive="active" routerLink="/admin">
-                <i class="glyphicon glyphicon-chevron-right"></i>CRUD Generator</a>
 
-        </div>
+        <ul class="nav nav-pills nav-stacked">
+            <li role="presentation" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+                <a class="list-group-item" routerLink="">Timers</a>
+            </li>
+            <li role="presentation" routerLinkActive="active">
+                <a class="list-group-item" routerLink="/admin">Admin</a>
+            </li>
+
+        </ul>
     </div>
-    <div class="col-md-9 col-sm-8">
-        <div class="default-view">
-            <h1>Model Generator</h1>
+    <div class="col-md-9 col-sm-8 ">
+        <div class="default-view ">
             <router-outlet></router-outlet>
 
         </div>

@@ -1,4 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { TaskService } from '../model/task.service';
+import { Task } from '../model/task';
 
 @Component({
   selector: 'app-task-admin',
@@ -8,9 +10,10 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 })
 export class TaskAdminComponent implements OnInit {
 
-  constructor() { }
+  tasks: Task[];
+  constructor(private taskService: TaskService) { }
 
   ngOnInit() {
+    this.taskService.getTasks().subscribe(tasks => this.tasks = tasks);
   }
-
 }
